@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: easygen-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: easygen-backend
+  template:
+    metadata:
+      labels:
+        app: easygen-backend
+    spec:
+      containers:
+      - name: easygen-backend
+        image: ghcr.io/caleb-okkers/easy-gen:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: openai-secret
+              key: OPENAI_API_KEY
+        - name: MOCK_MODE
+          value: "false"
